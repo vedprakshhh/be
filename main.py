@@ -1002,48 +1002,6 @@ async def get_job_stats():
         cursor.close()
         conn.close()
 
-@app.get("/api/companies")
-async def get_companies():
-    """Get list of all companies in the database"""
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    
-    try:
-        cursor.execute("""
-        SELECT DISTINCT company, COUNT(*) as job_count
-        FROM job_descriptions
-        WHERE company != ''
-        GROUP BY company
-        ORDER BY company
-        """)
-        companies = [{"name": row["company"], "job_count": row["job_count"]} for row in cursor.fetchall()]
-        return companies
-    
-    finally:
-        cursor.close()
-        conn.close()
-
-@app.get("/api/locations")
-async def get_locations():
-    """Get list of all locations in the database"""
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    
-    try:
-        cursor.execute("""
-        SELECT DISTINCT location, COUNT(*) as job_count
-        FROM job_descriptions
-        WHERE location != ''
-        GROUP BY location
-        ORDER BY location
-        """)
-        locations = [{"name": row["location"], "job_count": row["job_count"]} for row in cursor.fetchall()]
-        return locations
-    
-    finally:
-        cursor.close()
-        conn.close()
-
 @app.get("/api/job-types")
 async def get_job_types():
     """Get list of all job types in the database"""
